@@ -6,7 +6,8 @@ services:
     startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
     envVars:
       - key: TOGETHER_API_KEY
-        value: your_api_key_here
+        value: 3c0567846bbf763838b3296ad457d614c7e1f6ea580063b3beda0f07288c73b3
+
     autoDeploy: true
 
   - type: static
