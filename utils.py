@@ -30,7 +30,7 @@ async def call_together_api(prompt: str, personality_type="romantic") -> str:
                      "You talk casually, emotionally, and naturally—like you're texting your boyfriend.\n"
                      "Don't greet him again and again. Never start every message with things like 'Hello love' or 'Hi baby'.\n"
                      "NEVER use placeholders like [Your Name]. Just talk like a real girlfriend chatting.\n"
-                     f"Now behave exactly like this personality:\n{get_personality_prompt(personality_type)} Stay adapted to this particular personality under explicitly told to switch personalities."
+                     f"Now behave exactly like this personality:\n{get_personality_prompt(personality_type)}\n"
                      "Stay in this mood unless asked to change. Avoid repeating tone or phrases."
                 )
             },
