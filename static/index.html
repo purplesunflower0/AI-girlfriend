@@ -389,6 +389,7 @@ async function sendMessage() {
   async function setMood() {
     const mood = document.getElementById("mood").value;
     selectedMood = mood;
+    
     await fetch("https://ai-girlfriend-8cuy.onrender.com/set_personality", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

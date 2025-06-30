@@ -39,11 +39,13 @@ import os
 from memory_store import set_user_personality, get_user_personality
 
 @app.post("/set_personality")
-def set_personality(payload: dict):
-    user_id = payload.get("user_id")
-    mood = payload.get("mood")
+async def set_personality(data: dict):
+    user_id = data.get("user_id")
+    mood = data.get("mood", "romantic")
     set_user_personality(user_id, mood)
-    return {"message": f"Personality set to {mood} for user {user_id}"}
+    print(f"🎯 Personality input received: {mood}")
+    return {"message": "Personality updated"}
+
 
 @app.get("/get_personality/{user_id}")
 def get_personality(user_id: str):
