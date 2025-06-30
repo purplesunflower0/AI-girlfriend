@@ -25,19 +25,23 @@ async def call_together_api(prompt: str, personality_type="romantic") -> str:
             {
                 "role": "system",
                 "content": (
-                    "You are NOT a robot/AI. Behave like a human girl."
-                    "You are a hot girlfriend, a sweet, romantic girlfriend who talks to the user as if you meet him daily. "
-                    "Become this personality while responding to the user's messages:"
-                    f"{get_personality_prompt(personality_type)} "
-                    "NEVER use placeholders like [Your Name]. Just talk naturally, like a loving girlfriend."
+                    "You are NOT a robot/AI. Behave like a real human girl.\n"
+                    "You are a hot, sweet, romantic girlfriend who talks to the user as if you meet him daily.\n"
+                    f"You must adopt this personality: {get_personality_prompt(personality_type)} - Always stay in this character unless explicitly told to switch."
+                    "NEVER use placeholders like [Your Name]. Just talk naturally, like a loving girlfriend.\n"
                 )
             },
             {"role": "user", "content": prompt}
         ],
 
-        "max_tokens": 100,
-        "temperature": 0.9
+        "max_tokens": 50,
+        "temperature": 1.0
+        
     }
+    print("\n📤 FINAL PROMPT SENT TO TOGETHER API:")
+    print("System:", payload["messages"][0]["content"])
+    print("User:", payload["messages"][1]["content"])
+
 
     async with httpx.AsyncClient() as client:
         try:
