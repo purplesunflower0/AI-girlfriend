@@ -34,7 +34,7 @@ async def call_together_api(prompt: str, personality_type="romantic") -> str:
             {"role": "user", "content": prompt}
         ],
 
-        "max_tokens": 50,
+        "max_tokens": 80,
         "temperature": 1.0
         
     }
