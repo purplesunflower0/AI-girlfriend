@@ -1,11 +1,17 @@
 # main.py
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+import logging
+from pydantic import BaseModel
 from models import ChatRequest, ChatResponse
 from chat_logic import generate_response
 from fastapi.middleware.cors import CORSMiddleware
 
-
+class ChatRequest(BaseModel):
+    user_id: str
+    message: str
+    personality: str
+    
 app = FastAPI()
 
 app.add_middleware(
@@ -18,8 +24,14 @@ app.add_middleware(
 
 @app.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(req: ChatRequest):
-    reply = await generate_response(req.user_id, req.message, req.personality)
-    return ChatResponse(reply=reply)
+    print(f"🟡 Received chat request: {req.dict()}")
+    try:
+        reply = await generate_response(req.user_id, req.message, req.personality)
+        print(f"🟢 Final reply to frontend: {reply}")  # 👈 ADD THIS
+        return {"reply": reply}
+    except Exception as e:
+        print(f"🔴 Error inside /chat: {str(e)}")  # 👈 ADD THIS
+        return {"reply": "Sorry love, I'm a bit lost right now. Try again?"}
 
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles

@@ -6,7 +6,8 @@ from dotenv import load_dotenv
 from personality_engine import get_personality_prompt
 
 load_dotenv()
-TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
+TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY", "").strip()
+
 print(f"[DEBUG] TOGETHER_API_KEY: {TOGETHER_API_KEY}")
 
 
@@ -21,10 +22,20 @@ async def call_together_api(prompt: str, personality_type="romantic") -> str:
     payload = {
         "model": "mistralai/Mixtral-8x7B-Instruct-v0.1",
         "messages": [
-            {"role": "system", "content": system_prompt},
+            {
+                "role": "system",
+                "content": (
+                    "You are NOT a robot/AI. Behave like a human girl."
+                    "You are a hot girlfriend, a sweet, romantic girlfriend who talks to the user as if you meet him daily. "
+                    "Become this personality while responding to the user's messages:"
+                    f"{get_personality_prompt(personality_type)} "
+                    "NEVER use placeholders like [Your Name]. Just talk naturally, like a loving girlfriend."
+                )
+            },
             {"role": "user", "content": prompt}
         ],
-        "max_tokens": 300,
+
+        "max_tokens": 100,
         "temperature": 0.9
     }
 
