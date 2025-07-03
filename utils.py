@@ -46,7 +46,7 @@ async def call_together_api(prompt: str, personality_type="romantic") -> str:
     print("User:", payload["messages"][1]["content"])
 
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(timeout=20.0) as client:
         try:
             response = await client.post(url, json=payload, headers=headers)
             raw = await response.aread()
@@ -65,5 +65,5 @@ async def call_together_api(prompt: str, personality_type="romantic") -> str:
                 return "Sorry love, I'm a bit lost right now. Try again?"
 
         except Exception as e:
-            print("🔥 API ERROR:", e)
+            print("🔥 API ERROR:", str(e))
             return "Sorry love, I'm a bit lost right now. Try again?"
