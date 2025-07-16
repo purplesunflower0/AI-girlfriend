@@ -312,6 +312,7 @@
 
   <div class="input-area">
     <input type="text" id="user-input" placeholder="Say something..." />
+    <button type="button" onclick="startListening()">🎤</button>
     <button class="send" onclick="sendMessage()">➤</button>
   </div>
 </div>
@@ -431,6 +432,37 @@ async function sendMessage() {
             moodDropdown.value = selectedMood;
     }
   };
+  let recognition;
+
+  function startListening() {
+    if (!('webkitSpeechRecognition' in window)) {
+      alert("Speech Recognition not supported in this browser.");
+      return;
+    }
+
+    recognition = new webkitSpeechRecognition();
+    recognition.lang = selectedMood === "romantic" || selectedMood === "flirty" ? "en-IN" : "hi-IN"; // adjust based on mood or add a separate language selector later
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    recognition.onstart = () => {
+      console.log("Listening...");
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[0][0].transcript;
+      document.getElementById("user-input").value = transcript;
+      sendMessage();  // auto-send after capturing speech
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      alert("Could not capture your voice. Try again.");
+    };
+
+    recognition.start();
+  }
+
 
 </script>
 </body>
